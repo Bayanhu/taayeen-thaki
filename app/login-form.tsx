@@ -36,6 +36,6 @@ export default function LoginForm() {
       <button className="primary-button login-button" disabled={loading}>{loading ? "لحظة..." : mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب"}</button>
     </form>
     <button className="auth-switch" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setMessage(""); }}>{mode === "login" ? "ليس لديك حساب؟ إنشاء حساب" : "لديك حساب؟ تسجيل الدخول"}</button>
-    <small>دخول آمن • أول حساب يُنشأ يحصل على صلاحية مدير النظام</small>
+    <small>دخول آمن • الصلاحيات تُدار من حساب مدير النظام</small>
   </section></main>;
 }
