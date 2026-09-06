@@ -26,7 +26,7 @@ export default function LoginForm() {
     setLoading(false);
   }
   return <main className="login-page" dir="rtl"><section className="login-card">
-    <div className="login-logo">✦</div><p className="eyebrow">منظومة التعيينات</p><h1>تعيين ذكي</h1>
+    <div className="login-logo">✦</div><h1>المنظومة الذكية</h1><p className="site-subtitle">لمراجعة واعتماد تعيينات التربية الخاصة</p>
     <p>{mode === "login" ? "سجّلي الدخول للوصول إلى مراجعة واعتماد تعيينات كوادر التربية الخاصة." : "أنشئي حسابك وابدئي باستخدام المنظومة."}</p>
     <form onSubmit={submit} className="auth-form">
       {mode === "signup" && <label className="field"><span>الاسم الكامل *</span><input name="name" required minLength={2}/></label>}
