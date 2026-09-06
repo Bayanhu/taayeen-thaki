@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createSupabaseServer } from "@/lib/supabase-server";
+import { supabasePublishableKey, supabaseUrl } from "@/lib/supabase-config";
 
 const createSchema = z.object({ name: z.string().trim().min(2).max(80), email: z.string().trim().email().transform(v => v.toLowerCase()), password: z.string().min(8).max(72), role: z.enum(["admin", "reviewer", "school"]) });
 async function adminClient() {
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
   const supabase = await adminClient(); if (!supabase) return Response.json({ error: "غير مصرح لك" }, { status: 403 });
   const parsed = createSchema.safeParse(await request.json()); if (!parsed.success) return Response.json({ error: "تحققي من البيانات وكلمة المرور" }, { status: 400 });
   const { name, email, password, role } = parsed.data;
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/signup`, { method: "POST", headers: { "Content-Type": "application/json", apikey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY! }, body: JSON.stringify({ email, password, data: { name } }) });
+  const response = await fetch(`${supabaseUrl}/auth/v1/signup`, { method: "POST", headers: { "Content-Type": "application/json", apikey: supabasePublishableKey }, body: JSON.stringify({ email, password, data: { name } }) });
   const created = await response.json();
   if (!response.ok || !created.user?.id) return Response.json({ error: created.msg || created.message || "تعذر إنشاء الحساب" }, { status: response.status || 400 });
   const { error } = await supabase.from("profiles").update({ name, role }).eq("id", created.user.id);
