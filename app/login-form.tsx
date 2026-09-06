@@ -2,11 +2,13 @@
 
 import { useState, type FormEvent } from "react";
 import { createSupabaseBrowser } from "@/lib/supabase-browser";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setLoading(true); setMessage("");
     const data = new FormData(event.currentTarget);
@@ -30,8 +32,8 @@ export default function LoginForm() {
     <p>{mode === "login" ? "سجّلي الدخول للوصول إلى مراجعة واعتماد تعيينات كوادر التربية الخاصة." : "أنشئي حسابك وابدئي باستخدام المنظومة."}</p>
     <form onSubmit={submit} className="auth-form">
       {mode === "signup" && <label className="field"><span>الاسم الكامل *</span><input name="name" required minLength={2}/></label>}
-      <label className="field"><span>البريد الإلكتروني *</span><input name="email" type="email" required dir="ltr"/></label>
-      <label className="field"><span>كلمة المرور *</span><input name="password" type="password" required minLength={8} dir="ltr"/></label>
+      <label className="field"><span>البريد الإلكتروني</span><input name="email" type="email" required dir="ltr"/></label>
+      <label className="field"><span>كلمة المرور</span><div className="password-field"><input name="password" type={showPassword ? "text" : "password"} required minLength={8} dir="ltr"/><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}>{showPassword ? <EyeOff size={19}/> : <Eye size={19}/>}</button></div></label>
       {message && <div className={message.startsWith("تم") ? "message" : "error-message"}>{message}</div>}
       <button className="primary-button login-button" disabled={loading}>{loading ? "لحظة..." : mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب"}</button>
     </form>
